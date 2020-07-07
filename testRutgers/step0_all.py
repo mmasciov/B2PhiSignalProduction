@@ -86,6 +86,7 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
             processParameters = cms.vstring(
                     'HardQCD:hardbbbar  = on',
                     'PhaseSpace:pTHatMin = 3',  
+                    'ParticleDecays:limitTau0 = off',
                     '6000211:all = GeneralResonance void 0 0 0 2.0 0.001 0.0 0.0 50',
                     '6000211:oneChannel = 1 1.0 101 13 -13',
                     '521:addChannel = 1 1 1 6000211 321',
@@ -108,14 +109,14 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
 
 
 process.llphitomumukingenfilter = cms.EDFilter("PythiaDauVFilter",
-                                               verbose         = cms.untracked.int32(1), 
-                                               NumberDaughters = cms.untracked.int32(2), 
-                                               ParticleID      = cms.untracked.int32(6000211),  # LL phi
-                                               DaughterIDs     = cms.untracked.vint32(13, -13), # mu+ mu-
-                                               MinPt           = cms.untracked.vdouble( 2., 2.), 
-                                               MinEta          = cms.untracked.vdouble(-3.,-3.), 
-                                               MaxEta          = cms.untracked.vdouble( 3., 3.)
-                                       )
+                                       verbose         = cms.untracked.int32(1),
+                                       NumberDaughters = cms.untracked.int32(2), 
+                                       ParticleID      = cms.untracked.int32(6000211),  
+                                       DaughterIDs     = cms.untracked.vint32(13, -13), 
+                                       MinPt           = cms.untracked.vdouble( 3.0, 3.0), 
+                                       MinEta          = cms.untracked.vdouble(-2.4,-2.4), 
+                                       MaxEta          = cms.untracked.vdouble( 2.4, 2.4)
+                               )
 
 process.llphigenfilter = cms.EDFilter("PythiaDauFilter",
                                       MinPt = cms.untracked.double(0.0),

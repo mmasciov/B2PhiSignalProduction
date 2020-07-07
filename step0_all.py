@@ -9,6 +9,8 @@ import sys
 import random
 
 from Configuration.StandardSequences.Eras import eras
+from Configuration.Generator.Pythia8CommonSettings_cfi import *
+from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *
 
 process = cms.Process('SIM',eras.Run2_2017)
 
@@ -48,7 +50,6 @@ process.configurationMetadata = cms.untracked.PSet(
 )
 
 # Output definition
-
 process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
     SelectEvents = cms.untracked.PSet(
         SelectEvents = cms.vstring('generation_step')
@@ -73,63 +74,29 @@ process.genstepfilter.triggerConditions=cms.vstring("generation_step")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v11', '')
 
-
-
 process.RandomNumberGeneratorService.generator.initialSeed      = int(random.randint(1,90000))
 process.RandomNumberGeneratorService.VtxSmeared.initialSeed     = 2+ 1+int(random.randint(1,90000))
 process.RandomNumberGeneratorService.g4SimHits.initialSeed      =  5+int(random.randint(1,90000))
 process.RandomNumberGeneratorService.mix.initialSeed            =  7+int(random.randint(1,90000))
 
-
-
 process.generator = cms.EDFilter("Pythia8GeneratorFilter",
     PythiaParameters = cms.PSet(
-        parameterSets = cms.vstring('pythia8CommonSettings',
-            'pythia8CP5Settings',
-            'processParameters'),
-
-        processParameters = cms.vstring(
-                'HardQCD:hardbbbar  = on',
-                'PhaseSpace:pTHatMin = 3',  
-                '6000211:all = GeneralResonance void 0 0 0 2.0 0.001 0.0 0.0 50',
-                '6000211:oneChannel = 1 1.0 101 13 -13',
-                '521:addChannel = 1 1 1 6000211 321',
-                '511:addChannel = 1 1 1 6000211 311',
-                '531:addChannel = 1 1 1 6000211 333', 
-                '541:addChannel = 1 1 1 6000211 431',
-                '5122:addChannel = 1 1 1 6000211 3122',
-         ),
-       
-
-
-	pythia8CP5Settings = cms.vstring('Tune:pp 14',
-            'Tune:ee 7',
-            'MultipartonInteractions:ecmPow=0.03344',
-            'PDF:pSet=20',
-            'MultipartonInteractions:bProfile=2',
-            'MultipartonInteractions:pT0Ref=1.41',
-            'MultipartonInteractions:coreRadius=0.7634',
-            'MultipartonInteractions:coreFraction=0.63',
-            'ColourReconnection:range=5.176',
-            'SigmaTotal:zeroAXB=off',
-            'SpaceShower:alphaSorder=2',
-            'SpaceShower:alphaSvalue=0.118',
-            'SigmaProcess:alphaSvalue=0.118',
-            'SigmaProcess:alphaSorder=2',
-            'MultipartonInteractions:alphaSvalue=0.118',
-            'MultipartonInteractions:alphaSorder=2',
-            'TimeShower:alphaSorder=2',
-            'TimeShower:alphaSvalue=0.118'),
-
-        pythia8CommonSettings = cms.vstring('Tune:preferLHAPDF = 2',
-            'Main:timesAllowErrors = 10000',
-            'Check:epTolErr = 0.01',
-            'Beams:setProductionScalesFromLHEF = off',
-            'SLHA:keepSM = on',
-            'SLHA:minMassSM = 1000.',
-            'ParticleDecays:limitTau0 = on',
-            'ParticleDecays:tau0Max = 1000',
-            'ParticleDecays:allowPhotonRadiation = on')
+            pythia8CommonSettingsBlock,
+            pythia8CP5SettingsBlock,
+            processParameters = cms.vstring(
+                    'HardQCD:hardbbbar  = on',
+                    'PhaseSpace:pTHatMin = 3',  
+                    '6000211:all = GeneralResonance void 0 0 0 2.0 0.001 0.0 0.0 50',
+                    '6000211:oneChannel = 1 1.0 101 13 -13',
+                    '521:addChannel = 1 1 1 6000211 321',
+                    '511:addChannel = 1 1 1 6000211 311',
+                    '531:addChannel = 1 1 1 6000211 333', 
+                    '541:addChannel = 1 1 1 6000211 431',
+                    '5122:addChannel = 1 1 1 6000211 3122',
+            ),
+            parameterSets = cms.vstring('pythia8CommonSettings',
+                                        'pythia8CP5Settings',
+                                        'processParameters'),
     ),
     comEnergy = cms.double(13000),
     crossSection = cms.untracked.double(1),
@@ -140,14 +107,24 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
 )
 
 
-process.mugenfilter = cms.EDFilter("PythiaDauFilter",
-                                   MinPt = cms.untracked.double(0.0),
-                                   MinEta = cms.untracked.double(-5.0),
-                                   MaxEta = cms.untracked.double(5.0),
-                                   ParticleID = cms.untracked.int32(6000211),
-                                   DaughterIDs = cms.untracked.vint32(-13,13),
-                                   NumberDaughters = cms.untracked.int32(2),
-                           )
+process.llphitomumukingenfilter = cms.EDFilter("PythiaDauVFilter",
+                                               verbose         = cms.untracked.int32(1), 
+                                               NumberDaughters = cms.untracked.int32(2), 
+                                               ParticleID      = cms.untracked.int32(6000211),  # LL phi
+                                               DaughterIDs     = cms.untracked.vint32(13, -13), # mu+ mu-
+                                               MinPt           = cms.untracked.vdouble( 2., 2.), 
+                                               MinEta          = cms.untracked.vdouble(-3.,-3.), 
+                                               MaxEta          = cms.untracked.vdouble( 3., 3.)
+                                       )
+
+process.llphigenfilter = cms.EDFilter("PythiaDauFilter",
+                                      MinPt = cms.untracked.double(0.0),
+                                      MinEta = cms.untracked.double(-5.0),
+                                      MaxEta = cms.untracked.double(5.0),
+                                      ParticleID = cms.untracked.int32(6000211),
+                                      DaughterIDs = cms.untracked.vint32(-13,13),
+                                      NumberDaughters = cms.untracked.int32(2),
+                              )
 
 
 
@@ -165,26 +142,27 @@ process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
 
-#Setup FWK for multithreaded
+# Setup FWK for multithreaded
 #process.options.numberOfThreads=cms.untracked.uint32(8)
 process.options.numberOfStreams=cms.untracked.uint32(0)
-# filter all path with the production filter sequence
+
+# Filter all path with the production filter sequence:
 for path in process.paths:
-	#getattr(process,path)._seq = process.generator * process.mugenfilter * getattr(process,path)._seq 
+	###getattr(process,path)._seq = process.generator * process.llphigenfilter * getattr(process,path)._seq 
+	#getattr(process,path)._seq = process.generator * process.llphitomumukingenfilter * getattr(process,path)._seq 
 	getattr(process,path)._seq = process.generator * getattr(process,path)._seq 
 
-# customisation of the process.
 
+### Customisation of the process.
 # Automatic addition of the customisation function from Configuration.DataProcessing.Utils
 from Configuration.DataProcessing.Utils import addMonitoring 
 
-#call to customisation function addMonitoring imported from Configuration.DataProcessing.Utils
+# Call to customisation function addMonitoring imported from Configuration.DataProcessing.Utils
 process = addMonitoring(process)
 
-# End of customisation functions
+### End of customisation functions
 
-# Customisation from command line
-
+### Customisation from command line
 # Add early deletion of temporary data products to reduce peak memory need
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
 process = customiseEarlyDelete(process)

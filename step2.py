@@ -32,7 +32,6 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-#    fileNames = cms.untracked.vstring('file:./../../CMSSW_9_3_15_patch3/src/STEP1_output/step1_BtoLLP_output_{0}.root'),
     fileNames = cms.untracked.vstring('file:./STEP1_output/step1_BtoLLP_output_{0}.root'.format(sys.argv[2])),
     secondaryFileNames = cms.untracked.vstring()
 )
@@ -58,7 +57,6 @@ process.AODSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(31457280),
-#    fileName = cms.untracked.string('file:./BtoLLP_m_1p5_ct_20_3000022/step2_BtoLLP_output_{0}.root'.format(sys.argv[2])),
     fileName = cms.untracked.string('file:./B2Phi_m_2_ct_50/step2_BtoLLP_output_{0}.root'.format(sys.argv[2])),
     outputCommands = process.AODSIMEventContent.outputCommands
 )

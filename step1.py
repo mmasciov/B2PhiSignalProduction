@@ -34,8 +34,7 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-#    fileNames = cms.untracked.vstring('file:./../../CMSSW_9_3_15_patch3/src/GENSIM_output/BtoLLP_GENSIM_{0}.root'.format(sys.argv[2])),
-    fileNames = cms.untracked.vstring('file:./GENSIM_output/BtoLLP_GENSIM_{0}.root'.format(sys.argv[2])),
+    fileNames = cms.untracked.vstring('file:./GENSIM_output/BtoLLP_GENSIM_{0}_all.root'.format(sys.argv[2])),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -58,7 +57,6 @@ process.PREMIXRAWoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
         fileName = cms.untracked.string('file:./STEP1_output/step1_BtoLLP_output_{0}.root'.format(sys.argv[2])),
-#    fileName = cms.untracked.string('file:./STEP1_output/step1_BtoLLP_output_{0}.root'.format(sys.argv[2])),
     outputCommands = process.PREMIXRAWEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )

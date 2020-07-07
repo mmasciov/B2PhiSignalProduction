@@ -1,6 +1,6 @@
 ### step-0:
 
-1) get configuration:
+1) get configuration (please, point to the wished fragment):
 
 source cmsDriverCommand_step0.sh
 

@@ -14,6 +14,5 @@ cp ../../B2Phi_fragment.py Configuration/GenProduction/python/B2Phi_fragment.py
 
 scram b
 cd ../../
-cmsDriver.py Configuration/GenProduction/python/B2Phi_fragment.py --fileout file:B2Phi_2017_GENSIM.root --mc --eventcontent RAWSIM --datatier GEN-SIM --conditions 93X_mc2017_realistic_v3 --beamspot Realistic25ns13TeVEarly2017Collision --step GEN,SIM --geometry DB:Extended --era Run2_2017 --python_filename B2Phi_2017_step0_cfg.py --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring -n 1000; 
-#|| exit $? ; 
+cmsDriver.py Configuration/GenProduction/python/B2Phi_fragment.py --fileout file:B2Phi_2017_GENSIM.root --mc --eventcontent RAWSIM --datatier GEN-SIM --conditions 93X_mc2017_realistic_v3 --beamspot Realistic25ns13TeVEarly2017Collision --step GEN,SIM --geometry DB:Extended --era Run2_2017 --python_filename B2Phi_2017_step0_cfg.py --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring -n 1000 || exit $? ; 
 

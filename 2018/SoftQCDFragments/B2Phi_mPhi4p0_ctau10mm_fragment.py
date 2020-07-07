@@ -6,8 +6,8 @@ from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *
 # Production Info
 configurationMetadata = cms.untracked.PSet(
         version = cms.untracked.string('$1.0$'),
-        name = cms.untracked.string('$Generic BBbar with a long-lived scalar resonance$'),
-        annotation = cms.untracked.string('Generic BBbar with a long-lived scalar resonance')
+        name = cms.untracked.string('$Generic BBbar with a long-lived scalar resonance, m=4 GeV, ctau=10 mm$'),
+        annotation = cms.untracked.string('Generic BBbar with a long-lived scalar resonance, m=4 GeV, ctau=10 mm')
 )
 
 generator = cms.EDFilter("Pythia8GeneratorFilter",
@@ -15,14 +15,12 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
             pythia8CommonSettingsBlock,
             pythia8CP5SettingsBlock,
             processParameters = cms.vstring(
-                    #'HardQCD:hardbbbar  = on',
-                    #'PhaseSpace:pTHatMin = 3',  
                     'SoftQCD:nonDiffractive = on',
                     'PTFilter:filter = on',  
                     'PTFilter:quarkToFilter = 5',  
                     'PTFilter:scaleToFilter = 1.0',  
                     'ParticleDecays:limitTau0 = off',
-                    '6000211:all = GeneralResonance void 0 0 0 2.0 0.001 0.0 0.0 50',
+                    '6000211:all = GeneralResonance void 0 0 0 4.0 0.001 0.0 0.0 10',
                     '6000211:oneChannel = 1 1.0 101 13 -13',
                     '521:addChannel = 1 1 1 6000211 321',
                     '511:addChannel = 1 1 1 6000211 311',

@@ -15,8 +15,6 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
             pythia8CommonSettingsBlock,
             pythia8CP5SettingsBlock,
             processParameters = cms.vstring(
-                    #'HardQCD:hardbbbar  = on',
-                    #'PhaseSpace:pTHatMin = 3',  
                     'SoftQCD:nonDiffractive = on',
                     'PTFilter:filter = on',  
                     'PTFilter:quarkToFilter = 5',  

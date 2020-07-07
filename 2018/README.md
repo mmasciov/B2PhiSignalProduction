@@ -1,6 +1,7 @@
 ### step-0:
 
 1) get configuration:
+
 source cmsDriverCommand_step0.sh
 
 2) run configuration:
